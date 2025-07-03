@@ -1,5 +1,6 @@
 package com.haohaoxuexi.springai.controller;
 
+import com.haohaoxuexi.springai.repository.ChatHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.memory.ChatMemory;
@@ -13,6 +14,9 @@ import reactor.core.publisher.Flux;
 public class ChatController {
 
     private final ChatClient chatClient;
+
+    private final ChatHistoryRepository chatHistoryRepository;
+
     @RequestMapping("/chat/v1")
     public String chat(String prompt) {
         return chatClient
@@ -24,6 +28,9 @@ public class ChatController {
 
     @RequestMapping(value = "/chat/v2", produces = "text/html;charset=utf-8")
     public Flux<String> chatStream(String prompt, String chatId) {
+
+        chatHistoryRepository.save("chat", chatId);
+
         return chatClient
                 .prompt()
                 .user(prompt)
