@@ -12,7 +12,6 @@ spring:
         base-url: https://dashscope.aliyuncs.com/compatible-mode
         options:
           model: qwen-plus
-          temperature: 0.8
 
 server:
   port: 8088
